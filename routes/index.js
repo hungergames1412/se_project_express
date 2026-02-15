@@ -1,13 +1,15 @@
 const router = require("express").Router();
-const clothingItem = require("./clothingItems");
-
-router.use("/items", clothingItem);
+const clothingItemRouter = require("./clothingItems");
 const userRouter = require("./users");
+const { NOT_FOUND } = require("../utils/errors"); // import error constant
 
+// Mount routers
+router.use("/items", clothingItemRouter);
 router.use("/users", userRouter);
 
+// Catch-all for unknown routes
 router.use((req, res) => {
-  res.status(500).send({ message: "Router not found" });
+  res.status(NOT_FOUND).send({ message: "Requested resource not found" });
 });
 
 module.exports = router;

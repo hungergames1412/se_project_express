@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
-const clothingItem = new mongoose.Schema({
+const clothingItemSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -11,6 +11,7 @@ const clothingItem = new mongoose.Schema({
   weather: {
     type: String,
     required: true,
+    enum: ["hot", "warm", "cold"], // restrict to valid weather values
   },
   imageUrl: {
     type: String,
@@ -31,13 +32,13 @@ const clothingItem = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
-      default: [],
     },
-  ],
+  ], // default array is automatically []
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-module.exports = mongoose.model("clothingItems", clothingItem);
+// Export singular camelCase model name
+module.exports = mongoose.model("clothingItem", clothingItemSchema);
