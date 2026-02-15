@@ -1,26 +1,20 @@
 const express = require("express");
 const router = express.Router();
+
+// Import controllers
 const {
-  getItems,
-  createItem,
-  deleteItem,
+  getClothingItems,
+  createClothingItem,
+  deleteClothingItem,
   likeItem,
   dislikeItem,
 } = require("../controllers/clothingItems");
 
-// GET all items
-router.get("/", getItems);
-
-// POST create a new item
-router.post("/", createItem);
-
-// DELETE an item by ID
-router.delete("/:itemId", deleteItem);
-
-// PUT like an item
+// Routes
+router.get("/", getClothingItems);
+router.post("/", createClothingItem);
+router.delete("/:itemId", deleteClothingItem);
 router.put("/:itemId/likes", likeItem);
-
-// DELETE unlike an item
 router.delete("/:itemId/likes", dislikeItem);
 
 module.exports = router;

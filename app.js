@@ -1,4 +1,3 @@
-// app.js
 const express = require("express");
 const mongoose = require("mongoose");
 
@@ -7,7 +6,7 @@ const userRoutes = require("./routes/users");
 const itemRoutes = require("./routes/clothingItems");
 
 // Import error codes
-const { INVALID_REQUEST, NOT_FOUND, SERVER_ERROR } = require("./utils/errors");
+const { INVALID_REQUEST, NOT_FOUND, DEFAULT_ERROR } = require("./utils/errors");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -18,7 +17,7 @@ app.use(express.json());
 // TEMPORARY AUTH: hardcode a test user ID for all requests
 app.use((req, res, next) => {
   req.user = {
-    _id: "PASTE_YOUR_TEST_USER_ID_HERE", // replace with your test user's _id from MongoDB
+    _id: "699120aa342558475919f3a9",
   };
   next();
 });
@@ -45,7 +44,7 @@ app.use((err, req, res, next) => {
   }
 
   res
-    .status(SERVER_ERROR)
+    .status(DEFAULT_ERROR)
     .send({ message: "An error has occurred on the server." });
 });
 
