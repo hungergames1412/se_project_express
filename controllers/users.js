@@ -1,29 +1,56 @@
-const User = require("../models/user"); // your Mongoose user model
-const { BAD_REQUEST, NOT_FOUND } = require("../utils/errors");
+const User = require("../models/user");
+const {
+  INVALID_REQUEST,
+  NOT_FOUND,
+  DEFAULT_ERROR,
+} = require("../utils/errors");
 
-// GET all users
-module.exports.getUsers = (req, res, next) => {
-  User.find({})
+// GET /users
+module.exports.getUsers = (req, res) => {
+  return User.find({})
     .then((users) => res.send(users))
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      return res
+        .status(DEFAULT_ERROR)
+        .send({ message: "An error has occurred on the server." });
+    });
 };
 
-// GET a user by ID
-module.exports.getUser = (req, res, next) => {
-  User.findById(req.params.userId)
+// GET /users/:userId
+module.exports.getUser = (req, res) => {
+  return User.findById(req.params.userId)
     .orFail(() => {
-      const err = new Error("User not found");
-      err.statusCode = NOT_FOUND;
-      throw err;
+      const error = new Error("User not found");
+      error.statusCode = NOT_FOUND;
+      throw error;
     })
     .then((user) => res.send(user))
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "CastError")
+        return res
+          .status(INVALID_REQUEST)
+          .send({ message: "Invalid ID format" });
+      return res
+        .status(err.statusCode || DEFAULT_ERROR)
+        .send({
+          message: err.message || "An error has occurred on the server.",
+        });
+    });
 };
 
-// POST create a new user
-module.exports.createUser = (req, res, next) => {
+// POST /users
+module.exports.createUser = (req, res) => {
   const { name, avatar } = req.body;
-  User.create({ name, avatar })
+  return User.create({ name, avatar })
     .then((user) => res.status(201).send(user))
-    .catch(next);
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "ValidationError")
+        return res.status(INVALID_REQUEST).send({ message: err.message });
+      return res
+        .status(DEFAULT_ERROR)
+        .send({ message: "An error has occurred on the server." });
+    });
 };

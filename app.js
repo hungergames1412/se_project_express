@@ -14,10 +14,10 @@ const { PORT = 3001 } = process.env;
 // Middleware to parse JSON
 app.use(express.json());
 
-// TEMPORARY AUTH: hardcode a test user ID for all requests
+// TEMPORARY AUTH: hardcode a test user
 app.use((req, res, next) => {
   req.user = {
-    _id: "699120aa342558475919f3a9",
+    _id: "69912de9d2234eea89bffcf1",
   };
   next();
 });
@@ -26,24 +26,27 @@ app.use((req, res, next) => {
 app.use("/users", userRoutes);
 app.use("/items", itemRoutes);
 
-// Catch-all for non-existent resources
-app.use((req, res) => {
+// Catch-all for non-existent routes
+app.use((req, res, next) => {
   res.status(NOT_FOUND).send({ message: "Requested resource not found" });
 });
 
-// Centralized error handling
+// Centralized error handler
 app.use((err, req, res, next) => {
-  console.error(err); // always log the error
+  console.error(err); // Always log errors for debugging
 
+  // Validation errors or invalid IDs
   if (err.name === "ValidationError" || err.name === "CastError") {
     return res.status(INVALID_REQUEST).send({ message: err.message });
   }
 
+  // Custom errors with statusCode
   if (err.statusCode) {
     return res.status(err.statusCode).send({ message: err.message });
   }
 
-  res
+  // Default server error
+  return res
     .status(DEFAULT_ERROR)
     .send({ message: "An error has occurred on the server." });
 });
@@ -54,7 +57,5 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Error connecting to MongoDB:", err));
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-});
+// Start the server
+app.listen(PORT, () => console.log(`App listening on port ${PORT}`));

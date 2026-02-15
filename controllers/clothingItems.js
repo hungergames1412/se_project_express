@@ -7,11 +7,11 @@ const {
 
 // GET /items
 module.exports.getClothingItems = (req, res) => {
-  ClothingItem.find({})
+  return ClothingItem.find({})
     .then((items) => res.send(items))
     .catch((err) => {
       console.error(err);
-      res
+      return res
         .status(DEFAULT_ERROR)
         .send({ message: "An error has occurred on the server." });
     });
@@ -21,14 +21,14 @@ module.exports.getClothingItems = (req, res) => {
 module.exports.createClothingItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
 
-  ClothingItem.create({ name, weather, imageUrl, owner: req.user._id })
+  return ClothingItem.create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => res.status(201).send(item))
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
         return res.status(INVALID_REQUEST).send({ message: err.message });
       }
-      res
+      return res
         .status(DEFAULT_ERROR)
         .send({ message: "An error has occurred on the server." });
     });
@@ -36,9 +36,7 @@ module.exports.createClothingItem = (req, res) => {
 
 // DELETE /items/:itemId
 module.exports.deleteClothingItem = (req, res) => {
-  const { itemId } = req.params;
-
-  ClothingItem.findByIdAndRemove(itemId)
+  return ClothingItem.findByIdAndRemove(req.params.itemId)
     .orFail(() => {
       const error = new Error("Item ID not found");
       error.statusCode = NOT_FOUND;
@@ -51,7 +49,7 @@ module.exports.deleteClothingItem = (req, res) => {
         return res
           .status(INVALID_REQUEST)
           .send({ message: "Invalid ID format" });
-      res
+      return res
         .status(err.statusCode || DEFAULT_ERROR)
         .send({
           message: err.message || "An error has occurred on the server.",
@@ -61,9 +59,9 @@ module.exports.deleteClothingItem = (req, res) => {
 
 // PUT /items/:itemId/likes
 module.exports.likeItem = (req, res) => {
-  ClothingItem.findByIdAndUpdate(
+  return ClothingItem.findByIdAndUpdate(
     req.params.itemId,
-    { $addToSet: { likes: req.user._id } }, // add _id if not exists
+    { $addToSet: { likes: req.user._id } },
     { new: true }
   )
     .orFail(() => {
@@ -74,7 +72,7 @@ module.exports.likeItem = (req, res) => {
     .then((item) => res.send(item))
     .catch((err) => {
       console.error(err);
-      res
+      return res
         .status(err.statusCode || DEFAULT_ERROR)
         .send({
           message: err.message || "An error has occurred on the server.",
@@ -84,9 +82,9 @@ module.exports.likeItem = (req, res) => {
 
 // DELETE /items/:itemId/likes
 module.exports.dislikeItem = (req, res) => {
-  ClothingItem.findByIdAndUpdate(
+  return ClothingItem.findByIdAndUpdate(
     req.params.itemId,
-    { $pull: { likes: req.user._id } }, // remove _id
+    { $pull: { likes: req.user._id } },
     { new: true }
   )
     .orFail(() => {
@@ -97,7 +95,7 @@ module.exports.dislikeItem = (req, res) => {
     .then((item) => res.send(item))
     .catch((err) => {
       console.error(err);
-      res
+      return res
         .status(err.statusCode || DEFAULT_ERROR)
         .send({
           message: err.message || "An error has occurred on the server.",

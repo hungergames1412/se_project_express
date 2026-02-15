@@ -1,7 +1,4 @@
 const express = require("express");
-const router = express.Router();
-
-// Import controllers
 const {
   getClothingItems,
   createClothingItem,
@@ -10,7 +7,8 @@ const {
   dislikeItem,
 } = require("../controllers/clothingItems");
 
-// Routes
+const router = express.Router();
+
 router.get("/", getClothingItems);
 router.post("/", createClothingItem);
 router.delete("/:itemId", deleteClothingItem);
