@@ -6,4 +6,5 @@ module.exports = {
   DEFAULT_ERROR: 500,
   DUPLICATE_ERROR: 11000,
   FORBIDDEN: 403,
+  CREATED: 201,
 };
