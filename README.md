@@ -1,9 +1,33 @@
-# WTWR (What to Wear?): Back End
-The back-end project is focused on creating a server for the WTWR application. You’ll gain a deeper understanding of how to work with databases, set up security and testing, and deploy web applications on a remote machine. The eventual goal is to create a server with an API and user authorization.
-## Running the Project
-`npm run start` — to launch the server 
+# Frontend Repo
 
-`npm run dev` — to launch the server with the hot reload feature
+https://github.com/hungergames1412/se_project_react
 
-### Testing
-Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
+# 🧥 SE Project Express
+
+![Node.js]
+![Express]
+![MongoDB]
+
+## 📖 Description
+
+Backend app to manage **users** and **clothing items** using Node.js, Express, and MongoDB.  
+Supports full CRUD, likes, and robust error handling.
+
+## ⚡ Scripts
+
+- `npm run start` – run server on `localhost:3001`
+- `npm run dev` – hot reload for development
+- `npm run lint` – check code style
+
+## 🛠 Tech Stack
+
+Node.js • Express • MongoDB • Mongoose • ESLint • Prettier • Validator
+
+## 🚀 API Endpoints
+
+- **Users:** `GET /users`, `GET /users/:id`, `POST /users`
+- **Items:** `GET /items`, `POST /items`, `DELETE /items/:id`, `PUT /items/:id/likes`, `DELETE /items/:id/likes`
+
+## 📝 Author
+
+**Susan Hofmann**
