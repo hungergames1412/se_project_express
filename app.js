@@ -21,10 +21,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const routes = require("./routes");
-
 app.use(express.json());
-app.use("/", routes);
 app.use("/", mainRouter);
 
 app.listen(PORT, () => {

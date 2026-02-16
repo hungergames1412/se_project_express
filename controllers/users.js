@@ -26,7 +26,7 @@ const createUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(INVALID_REQUEST).send({ message: err.message });
+        return res.status(INVALID_REQUEST).send({ message: "Invalid data" });
       }
       // Generic server error instead of err.message
       return res

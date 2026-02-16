@@ -14,9 +14,7 @@ const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
 
   if (!name || !weather || !imageUrl) {
-    return res
-      .status(INVALID_REQUEST)
-      .send({ message: "name, weather, and imageUrl are required" });
+    return res.status(INVALID_REQUEST).send({ message: "Invalid data" });
   }
 
   const owner = req.user._id;
@@ -26,7 +24,7 @@ const createItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(INVALID_REQUEST).send({ message: err.message });
+        return res.status(INVALID_REQUEST).send({ message: "Invalid data" });
       }
       return res
         .status(DEFAULT_ERROR)
@@ -37,7 +35,7 @@ const createItem = (req, res) => {
 // READ (all)
 const getItems = (req, res) =>
   ClothingItem.find({})
-    .then((items) => res.status(200).send(items))
+    .then((items) => res.send(items))
     .catch((err) => {
       console.error(err);
       return res
@@ -51,7 +49,7 @@ const updateItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(itemId)) {
-    return res.status(INVALID_REQUEST).send({ message: "Invalid item ID" });
+    return res.status(INVALID_REQUEST).send({ message: "Invalid data" });
   }
 
   return ClothingItem.findByIdAndUpdate(
@@ -60,14 +58,14 @@ const updateItem = (req, res) => {
     { new: true, runValidators: true }
   )
     .orFail()
-    .then((item) => res.status(200).send(item))
+    .then((item) => res.send(item))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
       if (err.name === "ValidationError" || err.name === "CastError") {
-        return res.status(INVALID_REQUEST).send({ message: err.message });
+        return res.status(INVALID_REQUEST).send({ message: "Invalid data" });
       }
       return res
         .status(DEFAULT_ERROR)
@@ -80,7 +78,7 @@ const deleteItem = (req, res) => {
   const { itemId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(itemId)) {
-    return res.status(INVALID_REQUEST).send({ message: "Invalid item ID" });
+    return res.status(INVALID_REQUEST).send({ message: "Invalid data" });
   }
 
   return ClothingItem.findById(itemId)
@@ -93,7 +91,7 @@ const deleteItem = (req, res) => {
       }
 
       return ClothingItem.findByIdAndDelete(itemId).then(() =>
-        res.status(200).send({ data: item })
+        res.send({ data: item })
       );
     })
     .catch((err) => {
@@ -102,7 +100,7 @@ const deleteItem = (req, res) => {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
       if (err.name === "CastError" || err.name === "ValidationError") {
-        return res.status(INVALID_REQUEST).send({ message: "Invalid item ID" });
+        return res.status(INVALID_REQUEST).send({ message: "Invalid data" });
       }
       return res
         .status(DEFAULT_ERROR)
@@ -115,7 +113,7 @@ const addLike = (req, res) => {
   const { itemId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(itemId)) {
-    return res.status(INVALID_REQUEST).send({ message: "Invalid item ID" });
+    return res.status(INVALID_REQUEST).send({ message: "Invalid data" });
   }
 
   return ClothingItem.findByIdAndUpdate(
@@ -124,14 +122,14 @@ const addLike = (req, res) => {
     { new: true }
   )
     .orFail()
-    .then((item) => res.status(200).send({ data: item }))
+    .then((item) => res.send({ data: item }))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
       if (err.name === "CastError" || err.name === "ValidationError") {
-        return res.status(INVALID_REQUEST).send({ message: "Invalid item ID" });
+        return res.status(INVALID_REQUEST).send({ message: "Invalid data" });
       }
       return res
         .status(DEFAULT_ERROR)
@@ -144,7 +142,7 @@ const removeLike = (req, res) => {
   const { itemId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(itemId)) {
-    return res.status(INVALID_REQUEST).send({ message: "Invalid item ID" });
+    return res.status(INVALID_REQUEST).send({ message: "Invalid data" });
   }
 
   return ClothingItem.findByIdAndUpdate(
@@ -153,14 +151,14 @@ const removeLike = (req, res) => {
     { new: true }
   )
     .orFail()
-    .then((item) => res.status(200).send({ data: item }))
+    .then((item) => res.send({ data: item }))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
       if (err.name === "CastError" || err.name === "ValidationError") {
-        return res.status(INVALID_REQUEST).send({ message: "Invalid item ID" });
+        return res.status(INVALID_REQUEST).send({ message: "Invalid data" });
       }
       return res
         .status(DEFAULT_ERROR)
@@ -171,7 +169,6 @@ const removeLike = (req, res) => {
 module.exports = {
   createItem,
   getItems,
-  updateItem,
   deleteItem,
   addLike,
   removeLike,
