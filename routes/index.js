@@ -1,14 +1,14 @@
 const router = require("express").Router();
 
 const userRouter = require("./users");
-const clothingItem = require("./clothingItems");
-
+const clothingItemRouter = require("./clothingItems");
 const { NOT_FOUND } = require("../utils/errors");
 
-router.use("/items", clothingItem);
+// Mount routers
+router.use("/items", clothingItemRouter); // /items GET public, other routes protected
+router.use("/users", userRouter); // /users/signup, /users/signin public, /users/me protected
 
-router.use("/users", userRouter);
-
+// 404 handler
 router.use((req, res) => {
   res.status(NOT_FOUND).send({ message: "Router resource not found" });
 });
