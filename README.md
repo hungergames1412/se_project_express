@@ -1,33 +1,109 @@
-# Frontend Repo
+📖 Overview
 
-https://github.com/hungergames1412/se_project_react
+This backend application manages users and clothing items.
+It provides a RESTful API built with Node.js, Express, and MongoDB, supporting full CRUD operations, like/unlike functionality, and centralized error handling.
 
-# 🧥 SE Project Express
+Frontend repository: se_project_react
 
-![Node.js]
-![Express]
-![MongoDB]
+⚡ Features
 
-## 📖 Description
+REST API using Express.js with modular routing and controllers
 
-Backend app to manage **users** and **clothing items** using Node.js, Express, and MongoDB.  
-Supports full CRUD, likes, and robust error handling.
+MongoDB with Mongoose models for users and clothing items
 
-## ⚡ Scripts
+Password hashing and user authentication with bcryptjs and JWT
 
-- `npm run start` – run server on `localhost:3001`
-- `npm run dev` – hot reload for development
-- `npm run lint` – check code style
+Input validation using validator
 
-## 🛠 Tech Stack
+Centralized error handling with proper HTTP status codes
 
-Node.js • Express • MongoDB • Mongoose • ESLint • Prettier • Validator
+Development workflow with nodemon (hot reload)
 
-## 🚀 API Endpoints
+Code style enforcement with ESLint and Prettier
 
-- **Users:** `GET /users`, `GET /users/:id`, `POST /users`
-- **Items:** `GET /items`, `POST /items`, `DELETE /items/:id`, `PUT /items/:id/likes`, `DELETE /items/:id/likes`
+🗂 Project Structure
+se_project_express/
+├─ controllers/       # Route handlers
+│  ├─ clothingItems.js
+│  └─ users.js
+├─ middlewares/       # Authorization & error handling
+│  └─ auth.js
+├─ models/            # Mongoose schemas
+│  ├─ clothingItem.js
+│  └─ user.js
+├─ routes/            # API routes
+│  ├─ clothingItems.js
+│  ├─ index.js
+│  └─ users.js
+├─ utils/             # Configuration & constants
+│  ├─ config.js
+│  ├─ errors.js
+│  └─ successStatuses.js
+├─ app.js             # Entry point
+├─ package.json
+└─ README.md
+🛠 Tech Stack
 
-## 📝 Author
+Runtime: Node.js
 
-**Susan Hofmann**
+Web Framework: Express.js
+
+Database: MongoDB (local or Atlas) with Mongoose
+
+Authentication: bcryptjs + JWT
+
+Validation: validator
+
+Dev Tools: nodemon, ESLint, Prettier
+
+🚀 Getting Started
+Prerequisites
+
+Node.js (LTS ≥ 18)
+
+MongoDB running locally or via Atlas
+
+Installation
+git clone https://github.com/hungergames1412/se_project_express.git
+cd se_project_express
+npm install
+Running the Server
+
+Development (hot reload):
+
+npm run dev
+
+Production:
+
+npm run start
+
+Default URL: http://localhost:3001
+
+🧩 API Endpoints
+Users
+
+POST /users – Create a new user
+
+GET /users – Get all users
+
+GET /users/:id – Get a user by ID
+
+Clothing Items
+
+GET /items – Retrieve all clothing items
+
+POST /items – Create a new clothing item
+
+DELETE /items/:id – Delete a clothing item (owner only)
+
+PUT /items/:id/likes – Like a clothing item
+
+DELETE /items/:id/likes – Remove like from an item
+
+All endpoints return proper HTTP status codes for success and errors (400, 401, 403, 404, 500).
+
+Video to project: https://www.loom.com/share/5637ac5fd51d4aa6ae299e9ab8471ba6
+
+📝 Author
+
+Susan Hofmann
