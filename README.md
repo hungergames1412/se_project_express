@@ -102,7 +102,7 @@ DELETE /items/:id/likes – Remove like from an item
 
 All endpoints return proper HTTP status codes for success and errors (400, 401, 403, 404, 500).
 
-Video to project: https://www.loom.com/share/5637ac5fd51d4aa6ae299e9ab8471ba6
+Video to project: https://www.loom.com/embed/35bbd55e72e543a19144260dd1637be5
 
 📝 Author
 
