@@ -2,11 +2,16 @@ const router = require("express").Router();
 
 const userRouter = require("./users");
 const clothingItemRouter = require("./clothingItems");
+const { createUser, login } = require("../controllers/users");
 const { NOT_FOUND } = require("../utils/errors");
 
+// Public auth routes
+router.post("/signup", createUser);
+router.post("/signin", login);
+
 // Mount routers
-router.use("/items", clothingItemRouter); // /items GET public, other routes protected
-router.use("/users", userRouter); // /users/signup, /users/signin public, /users/me protected
+router.use("/items", clothingItemRouter);
+router.use("/users", userRouter);
 
 // 404 handler
 router.use((req, res) => {

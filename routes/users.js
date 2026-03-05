@@ -1,15 +1,6 @@
 const router = require("express").Router();
 const auth = require("../middlewares/auth");
-const {
-  getCurrentUser,
-  updateUser,
-  createUser,
-  login,
-} = require("../controllers/users");
-
-// Public routes
-router.post("/signup", createUser);
-router.post("/signin", login);
+const { getCurrentUser, updateUser } = require("../controllers/users");
 
 // Protected routes
 router.get("/me", auth, getCurrentUser);
