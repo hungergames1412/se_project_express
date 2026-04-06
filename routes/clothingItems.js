@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const auth = require("../middlewares/auth");
+
 const {
   createItem,
   getItems,
@@ -8,13 +9,18 @@ const {
   removeLike,
 } = require("../controllers/clothingItems");
 
-// Public route
+const {
+  clothingItemBodyValidation,
+  isValidation,
+} = require("../middlewares/validation");
+
+router.post("/", clothingItemBodyValidation, auth, createItem);
+
 router.get("/", getItems);
 
-// Protected routes
-router.post("/", auth, createItem);
-router.delete("/:itemId", auth, deleteItem);
-router.put("/:itemId/likes", auth, addLike);
-router.delete("/:itemId/likes", auth, removeLike);
+router.delete("/:itemId", isValidation, auth, deleteItem);
 
+router.put("/:itemId/likes", isValidation, auth, addLike);
+
+router.delete("/:itemId/likes", isValidation, auth, removeLike);
 module.exports = router;
