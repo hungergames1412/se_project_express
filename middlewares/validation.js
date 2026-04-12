@@ -20,6 +20,11 @@ const clothingItemBodyValidation = celebrate({
       "string.empty": "Image URL is required",
       "string.uri": "Image URL must be a valid URL",
     }),
+
+    weather: Joi.string().valid("hot", "warm", "cold").required().messages({
+      "any.only": "Weather must be one of: hot, warm, cold",
+      "string.empty": "Weather is required",
+    }),
   }),
 });
 

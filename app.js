@@ -34,9 +34,6 @@ app.get("/crash-test", () => {
   }, 0);
 });
 
-app.post("/signup", userInfoBodyValidation, createUser);
-app.post("/signin", clothingItemBodyValidation, login);
-
 // Main API routes
 app.use("/", mainRouter);
 
