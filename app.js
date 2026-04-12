@@ -8,21 +8,18 @@ const { errors } = require("celebrate");
 const app = express();
 
 const mainRouter = require("./routes/index");
-const { createUser, login } = require("./controllers/users");
+
 const { errorHandler } = require("./middlewares/errors");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-const {
-  userInfoBodyValidation,
-  clothingItemBodyValidation,
-} = require("./middlewares/validation");
 
 const PORT = process.env.PORT || 3001;
 
+// Middleware
 app.use(express.json());
 app.use(requestLogger);
 app.use(cors());
 
-// Health check route at root
+// Health check route
 app.get("/", (req, res) => {
   res.status(200).json({ message: "WTWR Backend is running" });
 });
@@ -34,19 +31,23 @@ app.get("/crash-test", () => {
   }, 0);
 });
 
-// Main API routes
+// Routes
 app.use("/", mainRouter);
 
-// Error logging & handling
+// Error handling
 app.use(errorLogger);
 app.use(errors());
 app.use(errorHandler);
 
-// Connect to MongoDB and start server
+// Database connection + server start
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
   .then(() => {
     console.log("Connected to MongoDB");
-    app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
+    app.listen(PORT, () => {
+      console.log(`App listening on port ${PORT}`);
+    });
   })
-  .catch((err) => console.error("Error connecting to MongoDB:", err));
+  .catch((err) => {
+    console.error("Error connecting to MongoDB:", err);
+  });
